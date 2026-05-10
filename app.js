@@ -85,7 +85,7 @@ document.body.innerHTML=`
     <button class="b" style="width:60%;margin-top:8px" onclick="doTare()">归零</button>
   </div>
   <div style="padding:0 16px">
-    <button class="b bg hidden" id="bsn" style="width:100%;padding:12px;font-size:16px" onclick="sN()">✓ 好了，下一个</button>
+    <button class="b bg" id="bsn" style="width:100%;padding:12px;font-size:16px" onclick="sN()">✓ 好了，下一个</button>
     <button class="b" style="width:100%;margin-top:8px" onclick="speak(sSpk())">🔊 再说一遍</button>
   </div>
 </div>
@@ -162,11 +162,11 @@ function updS(){const items=gc();if(si>=items.length)return;const s=items[si];
   const pct=Math.min(cw/s.val*100,100),close=Math.abs(cw-s.val)<=Math.max(s.val*.03,.3)&&cw>0,over=cw>s.val*1.05,color=close?'#2ecc71':over?'#ff4500':'#ffd166';
   $('sb').style.width=pct+'%';$('sb').style.background=color;$('wss').style.color=color;
   $('wss').textContent=cw===0?'等待放入...':close?'✓ 到了！':over?'多了！':'还差 '+(s.val-cw).toFixed(1)+' '+s.unit;
-  if(close)$('bsn').classList.remove('hidden');else $('bsn').classList.add('hidden');}
+}
 window.sN=function(){if(si<gc().length-1){si++;updSS();}else{show('pg-cook');ci=0;startC();}};
 
 // ── 做饭 ──
-function mkF(l){if(l==='off')return'<span style="font-size:12px;color:#555">无需开火</span>';const c={small:['#ff8c42','#ffd166'],medium:['#ff4500','#ff6b35'],large:['#cc0000','#ff4500']},h={small:[10,16,12],medium:[16,24,18],large:[24,36,30]};const cc=c[l]||c.medium,hh=h[l]||h.medium;let s='<div class="fire">';hh.forEach((v,i)=>{s+='<div class="fl" style="height:'+v+'px;background:'+cc[i%cc.length]+'"></div>';});return s+'</div>';}
+function mkF(l){if(l==='off')return'<span style="font-size:12px;color:#555">无需开火</span>';const c={small:['#ff8c42','#ffd166'],medium:['#ff4500','#ff6b35'],large:['#cc0000','#ff4500']},h={small:[10,16,12],medium:[16,24,18],large:[24,36,30]},ft={small:'小火（电磁炉3-4）',medium:'中火（电磁炉5-6）',large:'大火（电磁炉8-9）'};const cc=c[l]||c.medium,hh=h[l]||h.medium;let s='<div style="display:flex;align-items:center;gap:8px"><div class="fire">';hh.forEach((v,i)=>{s+='<div class="fl" style="height:'+v+'px;background:'+cc[i%cc.length]+'"></div>';});s+='</div><span style="font-size:13px;color:#ffd166">'+(ft[l]||'')+'</span></div>';return s;}
 
 function startC(){const s=R.cook[ci];
   $('cp2').textContent=(ci+1)+'/'+R.cook.length;$('cb2').style.width=(ci/R.cook.length*100)+'%';
